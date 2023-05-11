@@ -6,7 +6,7 @@ namespace OlympProject.WebApi.Interfaces
 {
     public interface IAccount
     {
-        public Account GetById(int id);
+        public Account Get(int id);
         public bool Create(AccountRequest accountRequest);
         public bool Update(int id, AccountRequest accountRequest);
         public bool Delete(int id);

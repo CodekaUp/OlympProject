@@ -40,7 +40,7 @@ namespace OlympProject.WebApi.Repositories
         {
             try
             {
-                var account = GetById(id);
+                var account = Get(id);
                 if (account != null)
                 {
                     context.Accounts.Remove(account);
@@ -58,7 +58,9 @@ namespace OlympProject.WebApi.Repositories
             }
         }
 
-        public Account GetById(int id)
+        
+
+        public Account Get(int id)
         {
             try
             {
@@ -106,7 +108,7 @@ namespace OlympProject.WebApi.Repositories
         {
             try
             {
-                var account = GetById(id);  
+                var account = Get(id);  
                 if (account != null)
                 {
                     accountRequest.FirstName = account.FirstName;

@@ -3,6 +3,7 @@ using OlympProject.WebApi.Repositories;
 using OlympProject.WebApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using OlympProject.Database;
+using OlympProject.Helpers;
 
 namespace OlympProject
 {
@@ -24,10 +25,17 @@ namespace OlympProject
             // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -36,10 +44,18 @@ namespace OlympProject
                 app.UseSwaggerUI();
             }
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.MapControllers();
 

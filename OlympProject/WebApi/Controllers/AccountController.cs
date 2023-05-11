@@ -19,10 +19,10 @@ namespace OlympProject.WebApi.Controllers
         }
 
         [HttpGet, Route("accounts/{id}")]
-        public ActionResult<AccountResponse> GetById(int id)
+        public ActionResult<Account> Get(int id)
         {
-            var responses = account.GetById(id);
-            return Ok(account);
+            var responses = account.Get(id);
+            return Ok(responses);
         }
 
         [HttpGet, Route("accounts/search")]
