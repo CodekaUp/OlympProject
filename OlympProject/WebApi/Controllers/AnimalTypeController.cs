@@ -17,29 +17,32 @@ namespace OlympProject.WebApi.Controllers
         }
 
         [HttpGet, Route("animals/types/{id}")]
-        public ActionResult<AnimalType> Get(long id)
+        public IActionResult Get(long id)
         {
             var animaltype = this.animalType.Get(id);
-            
             return Ok(animaltype);
         }
 
         [HttpPost, Route("animals/types")]
-        public void Create(AnimalTypeRequest animalTypeRequest)
+        public IActionResult Create(AnimalTypeRequest animalTypeRequest)
         {
-            animalType.Create(animalTypeRequest);
+            var response = animalType.Create(animalTypeRequest);
+            return Ok(response);
+
         }
 
         [HttpPut, Route("animals/types/{id}")]
-        public void Update(long id, AnimalTypeRequest animalTypeRequest)
+        public IActionResult Update(long id, AnimalTypeRequest animalTypeRequest)
         {
-            animalType.Update(id, animalTypeRequest);
+            var response = animalType.Update(id, animalTypeRequest);
+            return Ok(response);
         }
 
         [HttpDelete, Route("animals/types/{id}")]
-        public void Delete(long id)
+        public IActionResult Delete(long id)
         {
             animalType.Delete(id);
+            return Ok();
         }
 
     }

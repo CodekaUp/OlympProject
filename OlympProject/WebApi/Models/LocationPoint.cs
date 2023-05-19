@@ -1,4 +1,6 @@
-﻿namespace OlympProject.WebApi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace OlympProject.WebApi.Models
 {
     public class LocationPoint
     {

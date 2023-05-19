@@ -9,10 +9,12 @@ namespace OlympProject.Helpers
     {
         public AutoMapperProfile()
         {
-
             CreateMap<Account, AuthenticateResponse>();
-
             CreateMap<RegisterRequest, Account>();
+            CreateMap<Account, AccountResponse>();
+            CreateMap<LocationPoint, LocationPointResponse>();
+            CreateMap<AnimalType,  AnimalTypeResponse>();
+            CreateMap<Animal, AnimalResponse>();
         }
     }
 }

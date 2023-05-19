@@ -1,22 +1,26 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Identity.Client;
 using OlympProject.Database;
 using OlympProject.WebApi.Interfaces;
 using OlympProject.WebApi.Models;
 using OlympProject.WebApi.Models.Request;
+using OlympProject.WebApi.Models.Response;
 
 namespace OlympProject.WebApi.Repositories
 {
     public class AnimalTypeRepository : IAnimalType
     {
         private readonly AppDBContext context;
+        private readonly IMapper mapper;
 
-        public AnimalTypeRepository(AppDBContext context)
+        public AnimalTypeRepository(AppDBContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
-        public bool Create(AnimalTypeRequest animalTypeRequest)
+        public AnimalTypeResponse Create(AnimalTypeRequest animalTypeRequest)
         {
             try
             {
@@ -26,7 +30,8 @@ namespace OlympProject.WebApi.Repositories
                 };
                 context.AnimalTypes.Add(animaltype);
                 context.SaveChanges();
-                return true;
+                var response = mapper.Map<AnimalTypeResponse>(animaltype);
+                return response;
             }
             catch(Exception ex)
             {
@@ -76,7 +81,7 @@ namespace OlympProject.WebApi.Repositories
             }
         }
 
-        public bool Update(long id, AnimalTypeRequest animalTypeRequest)
+        public AnimalTypeResponse Update(long id, AnimalTypeRequest animalTypeRequest)
         {
             try
             {
@@ -85,7 +90,8 @@ namespace OlympProject.WebApi.Repositories
                 {
                     animaltype.Type = animalTypeRequest.Type;
                     context.SaveChanges();
-                    return true;
+                    var response = mapper.Map<AnimalTypeResponse>(animaltype);
+                    return response;
                 }
                 else
                 {

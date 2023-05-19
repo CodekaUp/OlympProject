@@ -1,4 +1,6 @@
-﻿using OlympProject.Database;
+﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
+using OlympProject.Database;
 using OlympProject.WebApi.Interfaces;
 using OlympProject.WebApi.Models;
 using OlympProject.WebApi.Models.Request;
@@ -10,33 +12,14 @@ namespace OlympProject.WebApi.Repositories
     public class AccountRepository : IAccount
     {
         private readonly AppDBContext context;
-        public AccountRepository(AppDBContext context)
+        private readonly IMapper mapper;
+        public AccountRepository(AppDBContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
-        public bool Create(AccountRequest accountRequest)
-        {
-            try
-            {
-                var account = new Account()
-                {
-                    FirstName = accountRequest.FirstName,
-                    LastName = accountRequest.LastName,
-                    Email = accountRequest.Email,
-                    Password = accountRequest.Password,
-                };
-                context.Accounts.Add(account);
-                context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidDataException(ex.Message, ex);
-            }
-        }
-
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             try
             {
@@ -45,7 +28,6 @@ namespace OlympProject.WebApi.Repositories
                 {
                     context.Accounts.Remove(account);
                     context.SaveChanges();
-                    return true;
                 }
                 else
                 {
@@ -58,13 +40,11 @@ namespace OlympProject.WebApi.Repositories
             }
         }
 
-        
-
         public Account Get(int id)
         {
             try
             {
-                var account = context.Accounts.SingleOrDefault(x => x.Id == id);
+                var account = context.Accounts.Find(id);
                 if (account != null)
                 {
                     return account;
@@ -104,19 +84,20 @@ namespace OlympProject.WebApi.Repositories
             }
         }
 
-        public bool Update(int id, AccountRequest accountRequest)
+        public AccountResponse Update(int id, AccountRequest accountRequest)
         {
             try
             {
                 var account = Get(id);  
                 if (account != null)
                 {
-                    accountRequest.FirstName = account.FirstName;
-                    accountRequest.LastName = account.LastName;
-                    accountRequest.Password = account.Password;
-                    accountRequest.Email = account.Email;
+                    account.FirstName = accountRequest.FirstName;
+                    account.LastName = accountRequest.LastName;
+                    account.Password = accountRequest.Password;
+                    account.Email = accountRequest.Email;
                     context.SaveChanges();
-                    return true;
+                    var response = mapper.Map<AccountResponse>(account);
+                    return response;
                 }
                 else
                 {

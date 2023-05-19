@@ -18,7 +18,7 @@ namespace OlympProject.WebApi.Controllers
         }
 
         [HttpGet, Route("locations/{id}")]
-        public ActionResult<LocationPoint> Get(long id)
+        public IActionResult Get(long id)
         {
             var locationPoint = this.locationPoint.Get(id);
             
@@ -26,21 +26,24 @@ namespace OlympProject.WebApi.Controllers
         }
 
         [HttpPost, Route("locations")]
-        public void Create(LocationPointRequest locationPointRequest)
+        public IActionResult Create(LocationPointRequest locationPointRequest)
         {
-            locationPoint.Create(locationPointRequest);
-        }
+            var response = locationPoint.Create(locationPointRequest);
+            return Ok(response);
+        }    
 
         [HttpPut, Route("locations/{id}")]
-        public void Update(long id, LocationPointRequest locationPointRequest)
+        public IActionResult Update(long id, LocationPointRequest locationPointRequest)
         {
-            locationPoint.Update(id, locationPointRequest);
+            var response = locationPoint.Update(id, locationPointRequest);
+            return Ok(response);
         }
 
         [HttpDelete, Route("locations/{id}")]
-        public void Delete(long id)
+        public IActionResult Delete(long id)
         {
             locationPoint.Delete(id);
+            return Ok();
         }
 
     }

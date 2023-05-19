@@ -6,8 +6,8 @@ namespace OlympProject.WebApi.Interfaces
 {
     public interface IAccountService
     {
-        AuthenticateResponse Authenticate(AuthenticateRequest model);
-        Account GetById(int id);
-        void Register(RegisterRequest model);
+        public AuthenticateResponse Authenticate(AuthenticateRequest model);
+        public Account GetById(int id);
+        public void Register(RegisterRequest model);
     }
 }

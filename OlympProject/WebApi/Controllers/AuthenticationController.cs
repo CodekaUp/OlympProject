@@ -16,16 +16,13 @@ namespace OlympProject.WebApi.Controllers
     {
         private IAccountService _accountService;
         private IMapper _mapper;
-        private readonly AppSettings _appSettings;
 
         public AuthenticationController(
             IAccountService accountService,
-            IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IMapper mapper)
         {
             _accountService = accountService;
             _mapper = mapper;
-            _appSettings = appSettings.Value;
         }
 
         [Helpers.AllowAnonymous]

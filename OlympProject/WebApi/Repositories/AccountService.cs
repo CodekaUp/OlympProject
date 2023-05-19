@@ -29,7 +29,7 @@ namespace OlympProject.WebApi.Repositories
             var account = _context.Accounts.SingleOrDefault(x => x.Email == model.Email);
 
             if (account == null || !BCrypt.Net.BCrypt.Verify(model.Password, account.Password))
-                throw new AppException("Email or password is incorrect");
+                throw new AppException("Неверный email or password");
 
             var response = _mapper.Map<AuthenticateResponse>(account);
             response.Token = _jwtUtils.GenerateToken(account);
@@ -44,7 +44,7 @@ namespace OlympProject.WebApi.Repositories
         public void Register(RegisterRequest model)
         {
             if (_context.Accounts.Any(x => x.Email == model.Email))
-                throw new AppException("Email '" + model.Email + "' is already taken");
+                throw new AppException("Email '" + model.Email + "' уже занят");
 
             var account = _mapper.Map<Account>(model);
 
@@ -57,7 +57,7 @@ namespace OlympProject.WebApi.Repositories
         private Account getAccount(int id)
         {
             var account = _context.Accounts.Find(id);
-            if (account == null) throw new KeyNotFoundException("Account not found");
+            if (account == null) throw new KeyNotFoundException("Аккаунт не найден");
             return account;
         }
     }

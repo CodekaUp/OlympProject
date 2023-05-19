@@ -7,9 +7,8 @@ namespace OlympProject.WebApi.Interfaces
     public interface IAccount
     {
         public Account Get(int id);
-        public bool Create(AccountRequest accountRequest);
-        public bool Update(int id, AccountRequest accountRequest);
-        public bool Delete(int id);
+        public AccountResponse Update(int id, AccountRequest accountRequest);
+        public void Delete(int id);
         public List<Account> Search(string? firstName, string? lastName, string? email, int from = 0, int size = 10);
        
     }

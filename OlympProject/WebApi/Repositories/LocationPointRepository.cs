@@ -1,21 +1,26 @@
-﻿using Microsoft.Identity.Client;
+﻿using AutoMapper;
+using Microsoft.Identity.Client;
 using OlympProject.Database;
 using OlympProject.WebApi.Interfaces;
 using OlympProject.WebApi.Models;
 using OlympProject.WebApi.Models.Request;
+using OlympProject.WebApi.Models.Response;
 
 namespace OlympProject.WebApi.Repositories
 {
     public class LocationPointRepository : ILocationPoint
     {
         private readonly AppDBContext context;
+        private readonly IMapper mapper;
 
-        public LocationPointRepository(AppDBContext context)
+        public LocationPointRepository(AppDBContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
+
         }
 
-        public bool Create(LocationPointRequest locationPointRequest)
+        public LocationPointResponse Create(LocationPointRequest locationPointRequest)
         {
             try
             {
@@ -27,7 +32,8 @@ namespace OlympProject.WebApi.Repositories
                 };
                 context.LocationPoints.Add(locationPoint);
                 context.SaveChanges();
-                return true;
+                var response = mapper.Map<LocationPointResponse>(locationPoint);
+                return response;
             }
             catch(Exception ex)
             {
@@ -77,7 +83,7 @@ namespace OlympProject.WebApi.Repositories
             }
         }
 
-        public bool Update(long id, LocationPointRequest locationPointRequest)
+        public LocationPointResponse Update(long id, LocationPointRequest locationPointRequest)
         {
             try
             {
@@ -88,7 +94,8 @@ namespace OlympProject.WebApi.Repositories
                     locationpoint.Latitude = locationPointRequest.Latitude;
                     locationpoint.DateTimeOfVisitLocationPoint = locationPointRequest.DateTimeOfVisitLocationPoint;
                     context.SaveChanges();
-                    return true;
+                    var response = mapper.Map<LocationPointResponse>(locationpoint);
+                    return response;
                 }
                 else
                 {
